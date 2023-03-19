@@ -1,5 +1,6 @@
 const express = require('express');// load express application server module 
 const httpLogging = require('morgan');//load http rq,rs logger module
+const { sequelize } = require('./models');
 
 const port = process.env.PORT || 3000;//get the port from the local machine environment variable or set to default(3000)
 
@@ -20,7 +21,19 @@ app.get('/',(req,res)=>{
 });
 
 
+
+
 app.listen(port,()=>{
     //log a message when the application server starting
     console.log(`Server is up  on http://localhost:${port}`);
+
+    //sync the database 
+    sequelize
+        .sync()
+        .then(()=>{
+            console.log("Database synced successfully....")
+        })
+        .catch(err=>{
+            console.error("Database Error : ",err.message);
+        })
 });
