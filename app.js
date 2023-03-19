@@ -1,6 +1,7 @@
 const express = require('express');// load express application server module 
 const httpLogging = require('morgan');//load http rq,rs logger module
 const { sequelize } = require('./models');
+const apiRoutes  = require('./routes/apiRoutes');
 
 const port = process.env.PORT || 3000;//get the port from the local machine environment variable or set to default(3000)
 
@@ -19,6 +20,9 @@ app.get('/',(req,res)=>{
     
     res.status(403).send("<h1>Forbidden Access ....</h1>")
 });
+
+app.use('/api',apiRoutes);
+
 
 
 
