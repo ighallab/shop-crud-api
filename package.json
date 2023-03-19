@@ -1,0 +1,28 @@
+{
+  "name": "ecommerce-webapp",
+  "version": "1.0.0",
+  "description": "ecommerce api ",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/ighallab/bala7.git"
+  },
+  "author": "Ahmed Ghallab",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ighallab/bala7/issues"
+  },
+  "homepage": "https://github.com/ighallab/bala7#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "joi": "^17.8.4",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.2.0",
+    "nodemon": "^2.0.21",
+    "sequelize": "^6.29.3"
+  }
+}
