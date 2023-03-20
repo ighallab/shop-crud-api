@@ -21,6 +21,7 @@ app.get('/',(req,res)=>{
     res.status(403).send("<h1>Forbidden Access ....</h1>")
 });
 
+//register the main routes file
 app.use('/api',apiRoutes);
 
 

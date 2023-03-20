@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      
       Product.belongsTo(Category,{
         foreignKey:'categoryId',
-        as:'category'
+        as:'category',
       });
 
     }
