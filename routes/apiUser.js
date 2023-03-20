@@ -4,7 +4,7 @@ const router = express.Router();
 //require userContorller to interact with databas 
 //and validate the requests body fields
 const userController = require('../controllers/userContorller');
-const validatUserRequest = require('../controllers/validator/validateUserRequest');
+
 
 //get all users endpoint
 router.get('/',(req,res)=>{
@@ -77,6 +77,98 @@ router.post('/',(req,res)=>{
       })
 });
 
+//update user endpoint
+router.put('/:id',(req,res)=>{
+   userController
+      .updateUser(req.params,req.body)
+      .then(result=>{
+         res.status(200).json({
+            data: result,
+            status :200,
+            message: "got user data..."
+         })
+      })
+      .catch(err=>{
+         res.status(400).json({
+            data:null,
+            status:400,
+            message:err.message
+         })
+      })
+});
+//delete user endpoint 
+router.delete('/:id/details',(req,res)=>{
+   userController
+      .saveUserDetails(req.params,req.body)
+      .then(result=>{
+         res.status(200).json({
+            data: result,
+            status :200,
+            message: "got user data..."
+         })
+      })
+      .catch(err=>{
+         res.status(400).json({
+            data:null,
+            status:400,
+            message:err.message
+         })
+      })
+});
+
+
+
+//get all users with it's details
+router.get('/details/all',(req,res)=>{
+   userController
+      .getAllUserWithDetails()
+      .then(result=>{
+         res.status(200).json({
+            data: result,
+            status :200,
+            message: "got all data..."
+         })
+      })
+      .catch(err=>{
+         res.status(400).json({
+            data:null,
+            status:400,
+            message:err.message
+         })
+      })
+})
+
+//get single user with it's details
+router.get('/:id/details',(req,res)=>{
+
+   userController
+      .getUserDetails(req.params)
+      .then(result=>{
+         //condition for checking if we had a user with that id or not 
+         result.length ?
+            res.status(200).json({
+               data: result,
+               status :200,
+               message: "got user data..."
+            })
+            :
+            res.status(404).json({
+               data: null,
+               status :404,
+               message: "no user found ..."
+            });
+         
+         
+      })
+      .catch(err=>{
+         res.status(400).json({
+            data:null,
+            status:400,
+            message:err.message
+         })
+      })
+});
+
 //save a  new user details endpoint 
 router.post('/:id/details',(req,res)=>{
    userController
@@ -97,9 +189,26 @@ router.post('/:id/details',(req,res)=>{
       })
 });
 
-//update user endpoint
+//update user details endpoint
+router.put('/:id/details',(req,res)=>{
+   userController
+      .updateUserDetails(req.params,req.body)
+      .then(result=>{
+         res.status(200).json({
+            data: result,
+            status :200,
+            message: "got user data..."
+         })
+      })
+      .catch(err=>{
+         res.status(400).json({
+            data:null,
+            status:400,
+            message:err.message
+         })
+      })
+});
 
-//delete user endpoint 
 
 
 module.exports = router;

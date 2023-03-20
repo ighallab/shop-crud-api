@@ -67,9 +67,10 @@ module.exports = (sequelize, DataTypes) => {
       
     },
     age:{
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       validate:{
         isDate:true
+        
       }
     },
     address:{

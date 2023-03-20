@@ -17,7 +17,8 @@ async function getUser(params){
         return Promise.reject(new Error(error));
     }
     const result = await User.findAll({
-        where:{id:params.id}
+        where:{id:params.id},
+        include:['userDetails']
     });
 
     return result;
@@ -30,10 +31,8 @@ async function createUser(user){
     if(error){
         return Promise.reject(new Error(error));
     }
-    
-    const result = await User.create(user,{
-        include:['userDetails']
-    });
+    const result = await User.create(user);
+
     return result;
 }
 
@@ -49,8 +48,9 @@ async function updateUser(params,data){
         where:{
             id:params.id
         },
-        include:['userDetails']
     });
+
+    console.log(data)
     return result;
 }
 
@@ -98,12 +98,38 @@ async function saveUserDetails(params,details){
     const user = await User.findAll({
         where:{
             id:params.id
-        }
+        },
+        include:['userDetails']
+    }).then(user=>{
+        return user.userDetails.create(details)
+    }).catch(err=>{
+        Promise.reject(new Error(err));
     });
-    details.userId= user[0].id;
 
    
-    return await UserDetails.create(details);
+    return user;
+}
+
+//update a user details with relation 
+async function updateUserDetails(params,data){
+
+    const { error } = validatUserRequestGeneral.validatUserDetailsRequestGeneral(data);
+    if(error){
+        return Promise.reject(new Error(error));
+    }
+
+    const result = await User.findOne({
+        where:{
+            id:params.id
+        },
+        include:['userDetails']
+    }).then(user=>{
+        
+        return user.userDetails.update(data)
+    });
+
+    console.log(data)
+    return result;
 }
 
 module.exports = {
@@ -115,4 +141,5 @@ module.exports = {
     deleteUser,
     getAllUserWithDetails,
     getUserDetails,
+    updateUserDetails,
 };
