@@ -1,4 +1,4 @@
-const { Category } = require('../models/category');
+const { Category } = require('../models');
 
 //get all categories
 async function getAllCategroies(){
@@ -18,6 +18,7 @@ async function getSingleCategory(params){
 }
 //create a category 
 async function createCategory(data){
+    console.log(data)
     const result = await Category.create(data);
 
     return result ;
