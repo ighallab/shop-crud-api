@@ -31,13 +31,13 @@ module.exports = (sequelize, DataTypes) => {
       unique:true,
       references:{
         model:'users',
-        key:'id'
+        key:'id',
+        deferrable: 'SET_DEFERRED'
       },
     },
     first_name: {
       type: DataTypes.STRING,
       allowNull:false,
-      
     },
     last_name: {
       type: DataTypes.STRING,
@@ -45,15 +45,32 @@ module.exports = (sequelize, DataTypes) => {
       
     },
     gender: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate:{
+        isIn:{
+          args:['male','female'],
+          msg:"gender should be either male or female"
+        }
+
+      }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique:true
+      unique:true,
+      validate:{
+        isEmail:{ 
+          args:true,
+          msg:"should be ex@[mailserverdomain].com and unique"
+        },
+      }
+      
     },
     age:{
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      validate:{
+        isDate:true
+      }
     },
     address:{
       type: DataTypes.STRING

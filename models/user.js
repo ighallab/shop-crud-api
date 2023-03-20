@@ -14,6 +14,14 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
+    toJSON(){
+      return {
+        ...this.get(),
+        password:undefined,
+        createdAt:undefined
+      };
+    }
+
   }
 
   
