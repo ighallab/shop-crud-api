@@ -5,43 +5,44 @@ module.exports = {
     await queryInterface.createTable('userDetails', {
       
       id: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         autoIncrement:true,
         allowNull: false,
         primaryKey:true,
       },
       userId:{
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull:false,
         unique:true,
         references:{
           model:'users',
-          key:'id'
+          key:'id',
+          deferrable: Sequelize.Deferrable.SET_DEFERRED
         },
       },
       first_name: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull:false,
         
       },
       last_name: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull:false,
         
       },
       gender: {
-        type: DataTypes.STRING
+        type: Sequelize.STRING
       },
       email: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,
         unique:true
       },
       age:{
-        type: DataTypes.INTEGER
+        type: Sequelize.INTEGER
       },
       address:{
-        type: DataTypes.STRING
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
