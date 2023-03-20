@@ -4,7 +4,9 @@ const router = express.Router();
 //require userContorller to interact with databas 
 //and validate the requests body fields
 const userController = require('../controllers/userContorller');
+const validatUserRequest = require('../controllers/validator/validateUserRequest');
 
+//get all users endpoint
 router.get('/',(req,res)=>{
    userController
       .getAllUser()
@@ -24,15 +26,27 @@ router.get('/',(req,res)=>{
       })
 });
 
+//get a single user end point
 router.get('/:id',(req,res)=>{
+
    userController
       .getUser(req.params)
       .then(result=>{
-         res.status(200).json({
-            data: result,
-            status :200,
-            message: "got user data..."
-         })
+         //condition for checking if we had a user with that id or not 
+         result.length ?
+            res.status(200).json({
+               data: result,
+               status :200,
+               message: "got user data..."
+            })
+            :
+            res.status(404).json({
+               data: null,
+               status :404,
+               message: "no user found ..."
+            });
+         
+         
       })
       .catch(err=>{
          res.status(400).json({
@@ -43,6 +57,7 @@ router.get('/:id',(req,res)=>{
       })
 });
 
+//create a user end point
 router.post('/',(req,res)=>{
    userController
       .createUser(req.body)
@@ -62,6 +77,7 @@ router.post('/',(req,res)=>{
       })
 });
 
+//save a  new user details endpoint 
 router.post('/:id/details',(req,res)=>{
    userController
       .saveUserDetails(req.params,req.body)
@@ -80,6 +96,10 @@ router.post('/:id/details',(req,res)=>{
          })
       })
 });
+
+//update user endpoint
+
+//delete user endpoint 
 
 
 module.exports = router;
