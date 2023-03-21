@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate({User}) {
       // define association here
       Order.belongsTo(User,{
-        foreignKey:'userId',
+        foreignKey:{
+          name: 'userId',
+          allowNull:false
+        },
         as:'user'
       })
 
