@@ -6,19 +6,24 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
 
     //called by models/index.js automatically to register the assotiations
-    static associate({UserDetails}) {
+    static associate({UserDetails , Order}) {
     
       User.hasOne(UserDetails,{
         foreignKey: 'userId', 
         as: 'userDetails'
       });
+
+      User.hasMany(Order,{
+        foreignKey:'userId',
+        as:'order'
+      });
+
     }
 
     toJSON(){
       return {
         ...this.get(),
-        password:undefined,
-        createdAt:undefined
+        password:undefined
       };
     }
 
