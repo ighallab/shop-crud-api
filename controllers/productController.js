@@ -44,11 +44,42 @@ async function deleteProduct(params){
     })
 }
 
+//get product with it's category details
+async function getProductCategory(params){
+    const result = await Product.findOne({
+        where:{
+            id: params.id
+        },
+        include:['category']
+    })
+
+    return result ;
+
+}
+
+//get product and add a category to it 
+async function addProductCategory(params,data){
+    console.log(data)
+    const result = await Product.findOne({
+        where:{
+            id: params.id
+        },
+        include:['category']
+    }).then(product=>{
+        return product.setCategory(data.categoryId);
+    });
+
+    return result;
+}
+
+
 module.exports={
     getAllProducts,
     getProduct,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductCategory,
+    addProductCategory
 
 };

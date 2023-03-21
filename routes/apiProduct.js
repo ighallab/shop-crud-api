@@ -135,7 +135,42 @@ router.delete('/:id',(req,res)=>{
     })
 })
 //get product with it's category 
-
-//update product category
+router.get('/:id/category',(req,res)=>{
+    productContorller
+    .getProductCategory(req.params)
+    .then(result=>{
+        res.status(200).json({
+            data: result,
+            status: 200,
+            message:"get product category..."
+        })
+    })
+    .catch(err=>{
+        res.status(400).json({
+            data: null,
+            status: 400,
+            message: err.message
+        })
+    })
+})
+//add category to a product
+router.post('/:id/category',(req,res)=>{
+    productContorller
+    .addProductCategory(req.params,req.body)
+    .then(result=>{
+        res.status(200).json({
+            data: result,
+            status: 200,
+            message: "done adding category to the product... "
+        })
+    })
+    .catch(err=>{
+        res.status(400).json({
+            data: null,
+            status: 400,
+            message: err.message
+        })
+    })
+})
 
 module.exports=router;
