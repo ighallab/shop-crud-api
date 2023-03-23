@@ -1,4 +1,5 @@
 const { Category } = require('../models');
+const validateCategory = require('./validator/validateCategoryRequest');
 
 //get all categories
 async function getAllCategroies(){
@@ -20,13 +21,23 @@ async function getSingleCategory(params){
 
 //create a category 
 async function createCategory(data){
-    const result = await Category.create(data);
+    const { error } = validateCategory.validateCategory(data);
+    if(error){
+        return Promise.reject(new Error(error));
+    }
 
+    const result = await Category.create(data);
     return result ;
 }
 
 //update category
 async function updateCategory(params,data){
+    
+    const { error } = validateCategory.validateCategoryGeneral(data)
+    if(error){
+        return Promise.reject(error)
+    }
+    
     const result = await Category.update(data,{
         where:{
             id:params.id
@@ -73,6 +84,10 @@ async function getSingleCategoryProduct(params){
 
 //save product to a spacific category
 async function saveCategoryProduct(params,data){
+    const {error} = validateCategory.validateCategoryProductRequest(data);
+    if(error){
+        return Promise.reject(new Error(error))
+    }
     const result = Category.findOne({
         where:{
             id: params.id
