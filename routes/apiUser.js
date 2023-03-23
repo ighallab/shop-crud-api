@@ -82,11 +82,22 @@ router.put('/:id',(req,res)=>{
    userController
       .updateUser(req.params,req.body)
       .then(result=>{
-         res.status(200).json({
-            data: result,
-            status :200,
-            message: "got user data..."
-         })
+
+         result[0] ?
+
+            res.status(200).json({
+               data: result,
+               status :200,
+               message: "user data updated successfully..."
+            })
+         :
+            res.status(400).json({
+               data: null,
+               status: 400,
+               message: "no data was updated..."
+            })
+         ;
+
       })
       .catch(err=>{
          res.status(400).json({
@@ -96,6 +107,25 @@ router.put('/:id',(req,res)=>{
          })
       })
 });
+//change user password
+router.put('/:id/changePassword',(req,res)=>{
+   userController
+   .changePassword(req.params,req.body)
+   .then(result=>{
+      res.status(200).json({
+         data: result,
+         status: 200,
+         message: "password changes successfully..."
+      })
+   })
+   .catch(err=>{
+      res.status(400).json({
+         data: null,
+         status:400,
+         messsage: err.message
+      })
+   })
+})
 //delete user endpoint 
 router.delete('/:id/details',(req,res)=>{
    userController

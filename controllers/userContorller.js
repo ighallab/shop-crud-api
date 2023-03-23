@@ -1,6 +1,7 @@
 
-const { User,UserDetails } = require('../models');
+const { User} = require('../models');
 const validatUserRequestGeneral = require('./validator/validateUserRequest');
+const bcrypt = require('bcrypt');
 
 //get all users from database
 async function getAllUser(){
@@ -24,10 +25,10 @@ async function getUser(params){
     return result;
 } 
 
-//create a user inside database with it's details if had 
+//create a user inside database 
 async function createUser(user){  
         
-    const { error } = validatUserRequestGeneral.validatUserRequestGeneral(user);
+    const { error } = validatUserRequestGeneral.validatUserRequest(user);
     if(error){
         return Promise.reject(new Error(error));
     }
@@ -38,12 +39,16 @@ async function createUser(user){
 
 //update a user iinside database 
 async function updateUser(params,data){
-
+    
     const { error } = validatUserRequestGeneral.validatUserRequestGeneral(data);
     if(error){
         return Promise.reject(new Error(error));
     }
-
+    data = {//exclude password from regular update function
+        username: data.username,
+        token:data.token,
+        role:data.role
+    }
     const result = await User.update(data,{
         where:{
             id:params.id
@@ -53,7 +58,26 @@ async function updateUser(params,data){
     console.log(data)
     return result;
 }
+//change Password
+async function changePassword(params,data){
 
+    const {error} = validatUserRequestGeneral.validatePasswordChangeRequest(data);
+    
+    if(error){
+        return Promise.reject(new Error(error));
+    }
+
+    const salt = await bcrypt.genSalt();
+    const result = User.update({
+        password: await bcrypt.hash(data.new_password, salt)
+    },{
+        where:{
+            id: params.id
+        }
+    });
+
+    return result;
+}
 //delete user from database
 async function deleteUser(id){
     const { error } = validatUserRequestGeneral.validatUserRequestGeneral({id:id});
@@ -142,4 +166,5 @@ module.exports = {
     getAllUserWithDetails,
     getUserDetails,
     updateUserDetails,
+    changePassword,
 };
